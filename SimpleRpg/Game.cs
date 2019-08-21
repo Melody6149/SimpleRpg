@@ -8,8 +8,10 @@ namespace SimpleRpg
 {
     class Game
     {
-        String playerName = ""; // allows for player name to be stored for later
-        int PlayerHealth = 100; // for player healt
+        string playerName = ""; // allows for player name to be stored for later
+        int PlayerHealth = 100; // for player health
+        int Playerdamage = 10;
+        int playermaxHealth = 100;
 
         public void Start()
         {
@@ -19,8 +21,8 @@ namespace SimpleRpg
 
             while (alive && monsterRemaining > 0) // fight until you die
             {
-                Console.WriteLine("There are " + monsterRemaining + " monsters remaining.");
-                alive = Encounter(5); // sets damage
+                Console.WriteLine("There are " + monsterRemaining + " monsters remaining."); // shows player how many monsters are remaining
+                alive = Encounter(20,20); // First one is monster health second sets damage
                 monsterRemaining--; // subtracts one from monster remaing
             }
            
@@ -37,39 +39,77 @@ namespace SimpleRpg
             Console.WriteLine("Welcome " + playerName + "."); // shows playername because i put in the
         }
 
-        bool Encounter(int monsterDamage) // Code for encounter is here so it can be started with Encounter in the () in the start you can changed monster damage
+        bool Encounter(int monsterHealth, int monsterDamage) // Code for encounter is here so it can be started with Encounter in the () in the start you can changed monster damage
         {
             //Monster encounter!
-            
+
+
             Console.WriteLine(""); // creates a space inbetween lines
             Console.WriteLine("There is a monser in front of you"); // displayes this text
 
             string action = ""; //allows response to be stored as action
-            Console.WriteLine("What will you do? (fight/flee)"); //displayes this text
-            action = Console.ReadLine(); // stores user input as the string typed earlier
+            bool survived = true; //allows game to know if you are alive
+            while (PlayerHealth > 0 && monsterHealth > 0) // moved so player can pick action in same fight and prevents you from typing nothing
+            {
+                Console.WriteLine("What will you do? (fight/flee)"); //displayes this text
+                action = Console.ReadLine(); // stores user input as the string typed earlier
 
-            if (action == "fight") // does this if player types in fight
+
+                if (action == "fight") // does this if player types in fight
+                {
+                    survived = Fight(ref monsterHealth, ref monsterDamage);
+                    if (!survived)// ! means the value needs to be false for this to happen
+                    {
+                        return false;
+                    }
+                }
+
+                else if (action == "flee") // does this if player types in flee
+                {
+                    //Esccape
+                    Console.WriteLine("Got away safely..."); // shows got away safely
+                    return true; // allows flee to work
+                }
+            } return true;
+        }
+            bool Fight(ref int  monsterHealth, ref int monsterDamage)
             {
                 //Monster attack
-                Console.WriteLine("the monster attacks! " + playerName + "takes " + monsterDamage + " damage!");
-                PlayerHealth = PlayerHealth - monsterDamage;
-                Console.WriteLine(playerName + " has " + PlayerHealth + " health remaining.");
-                if (PlayerHealth<= 0 ) //runs code if player health is bellow 0
+                Console.WriteLine("The monster attacks! " + playerName + " takes " + monsterDamage + " damage!");
+                PlayerHealth = PlayerHealth - monsterDamage; // takes away damge monster does to player
+                Console.WriteLine(playerName + " has " + PlayerHealth + " health remaining."); // tell player how much health they have
+                if (PlayerHealth <= 0) //runs code if player health is bellow 0
                 {
                     Console.WriteLine(playerName + " was defeated");
                     return false; // Return leaves monster encounter code and sets alive to false
                 }
                 //Player attack
-                Console.WriteLine(playerName + " attacks! The monster is defeated!"); // only shows if the code in if is not run
+
+                Console.WriteLine(playerName + " attacks! The monster takes " + Playerdamage + "."); // only shows if the code in if is not run
+                monsterHealth = monsterHealth - Playerdamage; // takes away player damage from monster health
+                Console.WriteLine("The monster has " + monsterHealth + " HP left."); // tells playr how much health the monster has left
+                if (monsterHealth <= 0)
+                {
+                    Console.WriteLine("The monster has been defeated"); //tells the player they won
+                    return true; //  exits the loop code
+
+                }
+                return true;
             }
-            else if (action == "flee") // does this if player types in flee
+            bool Flee()
             {
-                //Esccape
-                Console.WriteLine("Got away safely..."); // shows got away safely
-            }
             return true;
+            }
+            bool Heal()
+            {
+            return true;
+            }
+                
+            
+        
+        
         }
         
        
     }
-}
+
