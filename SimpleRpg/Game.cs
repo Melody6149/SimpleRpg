@@ -11,9 +11,9 @@ namespace SimpleRpg
         //player stats
         string playerName = ""; // allows for player name to be stored for later
         int PlayerHealth = 100; // for player health
-        int Playerdamage = 10;
-        int playermaxHealth = 100;
-        int playerHealing = 25;
+        int Playerdamage = 10; // sets player damage
+        int playermaxHealth = 100; // sets max health
+        int playerHealing = 25; // sets how much healing does
 
         public void Start()
         {
@@ -21,7 +21,7 @@ namespace SimpleRpg
             bool alive = true; // bool allows for it to be set true or false
             int monsterRemaining = 5; //alows you to set number of monsters that show up
 
-            while (alive && monsterRemaining > 0) // fight until you die
+            while (alive && monsterRemaining > 0) // fight until no monsters or not alive
             {
                 Console.WriteLine("There are " + monsterRemaining + " monsters remaining."); // shows player how many monsters are remaining
                 alive = Encounter(20, 20); // First one is monster health second sets damage
@@ -130,12 +130,12 @@ namespace SimpleRpg
             //Player Heal
 
             Console.WriteLine(playerName + " Heals " + playerHealing + " using random magic."); // message that lets player know they healed
-            PlayerHealth = PlayerHealth + playerHealing;
-            if (PlayerHealth > playermaxHealth)
+            PlayerHealth = PlayerHealth + playerHealing; //adds healing to player health
+            if (PlayerHealth > playermaxHealth) // runs code to set player health to max health if player health goes above
             {
-                PlayerHealth = playermaxHealth;
+                PlayerHealth = playermaxHealth; //sets player health to maxhealth
             }
-            Console.WriteLine("You have " + PlayerHealth + "left");
+            Console.WriteLine("You have " + PlayerHealth + "left"); // tells the player how much health they have
             return true;
         }
 
