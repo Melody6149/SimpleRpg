@@ -69,7 +69,7 @@ namespace SimpleRpg
                 else if (action == "flee") // does this if player types in flee
                 {
                     survived = Flee();
-                        if (survived)
+                    if (survived)
                     {
                         return true;
                     }
@@ -77,8 +77,13 @@ namespace SimpleRpg
                 else if (action == "heal")
                 {
                     survived = Heal(ref monsterHealth, ref monsterDamage);
+                    if (!survived)// ! means the value needs to be false for this to happen
+                    {
+                        return false;
+                    }
                 }
-            } return true;
+            }
+            return true;
         }
         bool Fight(ref int monsterHealth, ref int monsterDamage)
         {
@@ -126,6 +131,10 @@ namespace SimpleRpg
 
             Console.WriteLine(playerName + " Heals " + playerHealing + " using random magic."); // message that lets player know they healed
             PlayerHealth = PlayerHealth + playerHealing;
+            if (PlayerHealth > playermaxHealth)
+            {
+                PlayerHealth = playermaxHealth;
+            }
             Console.WriteLine("You have " + PlayerHealth + "left");
             return true;
         }
